@@ -2,6 +2,14 @@ package database;
 
 public class DbException extends Exception{
 
+	public DbException(String string) {
+		super(string);
+	}
+
+	public DbException() {
+		super();
+	}
+
 	/**
 	 * 
 	 */

@@ -114,7 +114,8 @@ public class Test extends JFrame implements Runnable, ThreadFactory {
 	public static void main(String[] args) throws Exception {
 		//new Test();
 		//dbTest();
-		usuarioTest();
+		//usuarioTest();
+		findUsuarioTest();
 		
 	}
 	
@@ -138,6 +139,14 @@ public class Test extends JFrame implements Runnable, ThreadFactory {
 		usu.setCedula(456456);
 		usu.setPlaca("LOK420");
 		usu.setApartamento("Edificio 3 Casa 5");
-		dbm.saveUsuario(usu);
+		dbm.saveUsuario(usu); 
+	}
+	
+	public static void findUsuarioTest() throws Exception
+	{
+		DatabaseManager dbm=DatabaseManager.getInstance();
+		Usuario u=dbm.findUsuarioById(3);
+		System.out.println(u.getNombre());
+		System.out.println(u.getFoto());
 	}
 }

@@ -2,8 +2,11 @@ package database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import com.google.zxing.Result;
 
 import values.Usuario;
 
@@ -80,15 +83,34 @@ public class DatabaseManager {
     	{
     		ex.printStackTrace();
     		throw new DbException();
-    	}
-    	
+    	}  	
     	
     	
     }
     
-    public void findUsuarioById(int id)
+    public Usuario findUsuarioById(int id) throws DbException
     {
+    	String sql="SELECT * FROM USUARIOS WHERE ID=?";
+    	Usuario usuario=new  Usuario();
+    	try{
+    	Connection c=conector.conectar();
+    	PreparedStatement pstmt=c.prepareStatement(sql);
+    	pstmt.setInt(1, id);
+    	ResultSet rs=pstmt.executeQuery();
+    	if(!rs.next()) throw new DbException("No se encontro el usuario id:"+id);
+    	usuario.setId(rs.getInt("ID"));
+    	usuario.setNombre(rs.getString("NOMBRE"));
+    	usuario.setCedula(rs.getInt("CEDULA"));
+    	usuario.setFoto(rs.getBytes("FOTO"));
+    	usuario.setPlaca(rs.getString("PLACA"));
+    	usuario.setApartamento(rs.getString("APARTAMENTO"));
     	
+    	}catch(SQLException ex)
+    	{
+    		ex.printStackTrace();
+    		throw new DbException();
+    	}
+    	return usuario;
     }
     
     
