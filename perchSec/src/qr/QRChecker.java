@@ -39,6 +39,7 @@ public class QRChecker extends JFrame implements Runnable, ThreadFactory {
 	private Webcam webcam = null;
 	private WebcamPanel panel = null;
 	private JTextArea textarea = null;
+	private QRListener listener;
 
 	public QRChecker() {
 		super();
@@ -85,6 +86,7 @@ public class QRChecker extends JFrame implements Runnable, ThreadFactory {
 
 				if ((image = webcam.getImage()) == null) {
 					continue;
+					
 				}
 
 				LuminanceSource source = new BufferedImageLuminanceSource(image);
@@ -99,10 +101,16 @@ public class QRChecker extends JFrame implements Runnable, ThreadFactory {
 
 			if (result != null) {
 				textarea.setText(result.getText());
+				listener.notice(result.getText());
+				webcam.close();
+				this.dispose();
+				return;
 			}
 
 		} while (true);
 	}
+	
+	
 
 	@Override
 	public Thread newThread(Runnable r) {
@@ -110,8 +118,14 @@ public class QRChecker extends JFrame implements Runnable, ThreadFactory {
 		t.setDaemon(true);
 		return t;		
 	}
-
+	public void setQRListener(QRListener _listener){
+		listener=_listener;
+	}
 	
+	public interface QRListener{
+		public void notice(String info);
+	}
+
 	
 	
 }	

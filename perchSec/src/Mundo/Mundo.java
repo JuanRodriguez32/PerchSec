@@ -28,14 +28,13 @@ public class Mundo {
 		this.usuario = usuario;
 	}
 
-	public  void buscarUsuario(int id) {
+	public  Usuario buscarUsuario(int id) throws DbException {
 		// TODO Auto-generated method stub
-		try {
-			usuario=dbm.findUsuarioById(id);
-		} catch (DbException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+			 usuario=dbm.findUsuarioById(id);
+			 return usuario;
+		
+					
 		
 	}
 	

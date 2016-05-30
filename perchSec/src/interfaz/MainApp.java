@@ -19,13 +19,17 @@ import javax.swing.JTextArea;
 
 import Mundo.Mundo;
 import database.DatabaseManager;
+import database.DbException;
 import qr.QRChecker;
+import qr.QRgenerator;
+import qr.QRChecker.QRListener;
 import values.Usuario;
 
-public class MainApp implements ActionListener {
+public class MainApp implements ActionListener,QRListener {
 
 	private JFrame frmPerchsec;
 	public final static String CHECK = "Check";
+	public final static String TEST = "TEST";
 	private Mundo mundo;
 	private QRChecker qrChecker;
 	private JTextArea txtrUserName;
@@ -105,6 +109,12 @@ public class MainApp implements ActionListener {
 		btnCheckUser.addActionListener(this);
 		frmPerchsec.getContentPane().add(btnCheckUser);
 		
+		JButton btnTest = new JButton("Test");
+		btnTest.setBounds(102, 356, 89, 23);
+		btnTest.setActionCommand(TEST);
+		btnTest.addActionListener(this);
+		frmPerchsec.getContentPane().add(btnTest);
+		
 		JMenuBar menuBar = new JMenuBar();
 		frmPerchsec.setJMenuBar(menuBar);
 		
@@ -152,12 +162,38 @@ public class MainApp implements ActionListener {
 		if(e.getActionCommand()== CHECK)
 		{
 			System.out.println("asda333333333");
-			//qrChecker  = new QRChecker();
+			qrChecker  = new QRChecker();
+			qrChecker.setQRListener(this);
 			System.out.println("asda");
-			//qrChecker.show();
-			mundo.buscarUsuario(3);
-			actualizarLabels();
+			qrChecker.show();
+			//mundo.buscarUsuario(3);
+			//actualizarLabels();
+		}else if(e.getActionCommand().equals(TEST)){
+			System.out.println("test");
+			BufferedImage bf=QRgenerator.generate("3");
+			 ImageIcon icon = new ImageIcon(bf);	 
+			 lblUserImg.setIcon(icon);
 		}
+		
+	}
+	@Override
+	//Es llamado cuando se lee un QR
+	public void notice(String info) {
+		System.out.println("QR userid:"+info);
+		try {
+			
+			if(mundo.buscarUsuario(Integer.parseInt(info))!=null){
+				actualizarLabels();
+			}else{
+				//No se encontro
+			}
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DbException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 		
 	}
 

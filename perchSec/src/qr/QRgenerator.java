@@ -28,8 +28,8 @@ public class QRgenerator{
  
 
  
-	public static void main(String[] args) {
-		String myCodeText = "PedazoDeLok";
+        public static  BufferedImage generate(String text){
+		 String myCodeText = text;
 		String filePath = "hue.png";
 		int size = 250;
 		String fileType = "png";
@@ -65,11 +65,14 @@ public class QRgenerator{
 				}
 			}
 			ImageIO.write(image, fileType, myFile);
+			System.out.println("\n\nYou have successfully created QR Code.");
+			return image;
 		} catch (WriterException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("\n\nYou have successfully created QR Code.");
+		return null;
+		
 	}
 }
