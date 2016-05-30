@@ -78,6 +78,7 @@ public class DatabaseManager {
     	pstmt.setString(5, user.getPlaca());
     	pstmt.setString(6, user.getApartamento());
     	pstmt.executeUpdate();
+    	conector.desconectar();
     	System.out.println("Se guardo el usuario");
     	}catch(SQLException ex)
     	{
@@ -104,6 +105,7 @@ public class DatabaseManager {
     	usuario.setFoto(rs.getBytes("FOTO"));
     	usuario.setPlaca(rs.getString("PLACA"));
     	usuario.setApartamento(rs.getString("APARTAMENTO"));
+    	conector.desconectar();
     	
     	}catch(SQLException ex)
     	{
