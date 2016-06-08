@@ -177,7 +177,7 @@ public class MainApp implements ActionListener,QRListener {
 		
 		}else if(e.getActionCommand().equals(TEST)){
 			System.out.println("test");
-			 String test1= JOptionPane.showInputDialog(": ");
+			 String test1= JOptionPane.showInputDialog("Ingrese el codigo del usuario");
 			 Usuario usu=buscarUsuario(test1.trim());
 			 if (usu==null) return;
 			 BufferedImage bf=QRgenerator.generate(test1.trim());
