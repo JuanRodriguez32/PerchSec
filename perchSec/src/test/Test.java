@@ -10,9 +10,9 @@ import values.Usuario;
 public class Test {
 
 	public static void main(String[] args) throws Exception {
-		new QRChecker();
+		//new QRChecker();
 		//dbTest();
-		//usuarioTest();
+		usuarioTest();
 		//findUsuarioTest();
 		
 	}
@@ -27,17 +27,52 @@ public class Test {
 	{
 		DatabaseManager dbm=DatabaseManager.getInstance();
 		//dbm.createTables();
-		FileInputStream fis=new FileInputStream("packman.jpg");
+		
+		Usuario usu=new Usuario();
+		//
+		FileInputStream fis=new FileInputStream("test_imgs/1.png");
 		byte[] image=new byte[fis.available()];
 		fis.read(image);
-		Usuario usu=new Usuario();
-		usu.setId(3);
-		usu.setNombre("tuGfe");
+		usu.setId(1);
+		usu.setNombre("Juan Rodriguez");
 		usu.setFoto(image);
-		usu.setCedula(456456);
-		usu.setPlaca("LOK420");
+		usu.setCedula(8765556);
+		usu.setPlaca("BHS-456");
 		usu.setApartamento("Edificio 3 Casa 5");
-		dbm.saveUsuario(usu); 
+		dbm.saveUsuario(usu);
+		// 
+		fis=new FileInputStream("test_imgs/2.png");
+		image=new byte[fis.available()];
+		fis.read(image);
+		usu.setId(2);
+		usu.setNombre("Cristian Arango");
+		usu.setFoto(image);
+		usu.setCedula(8765556);
+		usu.setPlaca("FAS-321");
+		usu.setApartamento("Edificio 1 Casa 12");
+		dbm.saveUsuario(usu);
+		//
+		fis=new FileInputStream("test_imgs/3.png");
+		image=new byte[fis.available()];
+		fis.read(image);
+		usu.setId(3);
+		usu.setNombre("Juan Perchoya");
+		usu.setFoto(image);
+		usu.setCedula(8765556);
+		usu.setPlaca("TRE-334");
+		usu.setApartamento("Edificio 3 Casa 7");
+		dbm.saveUsuario(usu);
+		//
+		fis=new FileInputStream("test_imgs/4.png");
+		image=new byte[fis.available()];
+		fis.read(image);
+		usu.setId(4);
+		usu.setNombre("Daniel Briceño");
+		usu.setFoto(image);
+		usu.setCedula(8765556);
+		usu.setPlaca("BHS-897");
+		usu.setApartamento("Edificio 1 Casa 7");
+		dbm.saveUsuario(usu);
 	}
 	
 	public static void findUsuarioTest() throws Exception

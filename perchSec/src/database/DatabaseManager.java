@@ -98,7 +98,7 @@ public class DatabaseManager {
     	PreparedStatement pstmt=c.prepareStatement(sql);
     	pstmt.setInt(1, id);
     	ResultSet rs=pstmt.executeQuery();
-    	if(!rs.next()) throw new DbException("No se encontro el usuario id:"+id);
+    	if(!rs.next()) return null;
     	usuario.setId(rs.getInt("ID"));
     	usuario.setNombre(rs.getString("NOMBRE"));
     	usuario.setCedula(rs.getInt("CEDULA"));

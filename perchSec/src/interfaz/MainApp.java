@@ -4,6 +4,7 @@ package interfaz;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -15,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
 import Mundo.Mundo;
@@ -34,9 +36,10 @@ public class MainApp implements ActionListener,QRListener {
 	private QRChecker qrChecker;
 	private JTextArea txtrUserName;
 	private JTextArea txtrUserId;
+	private JTextArea txtrUserDoc;
 	private JTextArea txtrUserHouse;
 	private JTextArea txtrCarId;
-	private JTextArea txtrCarColor;
+	
 	private JLabel lblUserImg;
 	/**
 	 * Launch the application.
@@ -75,31 +78,35 @@ public class MainApp implements ActionListener,QRListener {
 		frmPerchsec.getContentPane().setLayout(null);
 		
 		txtrUserName = new JTextArea();
-		txtrUserName.setText("User name");
+		txtrUserName.setText("Nombre");
 		txtrUserName.setBounds(425, 79, 289, 22);
 		frmPerchsec.getContentPane().add(txtrUserName);
 		
 		txtrUserId = new JTextArea();
-		txtrUserId.setText("User ID");
+		txtrUserId.setText(" ID");
 		txtrUserId.setBounds(425, 125, 289, 22);
 		frmPerchsec.getContentPane().add(txtrUserId);
 		
+		txtrUserDoc = new JTextArea();
+		txtrUserDoc.setText("Documento");
+		txtrUserDoc.setBounds(425, 223, 289, 22);
+		
+		frmPerchsec.getContentPane().add(txtrUserDoc);
+		
+		
 		txtrUserHouse = new JTextArea();
-		txtrUserHouse.setText("User house");
+		txtrUserHouse.setText("Direccion");
 		txtrUserHouse.setBounds(425, 175, 289, 22);
 		frmPerchsec.getContentPane().add(txtrUserHouse);
 		
 		txtrCarId = new JTextArea();
-		txtrCarId.setText("Car ID");
-		txtrCarId.setBounds(425, 223, 289, 22);
+		txtrCarId.setText("Placa");
+		
+		txtrCarId.setBounds(425, 276, 289, 22);
 		frmPerchsec.getContentPane().add(txtrCarId);
 		
-		txtrCarColor = new JTextArea();
-		txtrCarColor.setText("Car color / type");
-		txtrCarColor.setBounds(425, 276, 289, 22);
-		frmPerchsec.getContentPane().add(txtrCarColor);
 		
-	    lblUserImg = new JLabel("User Img");
+	    lblUserImg = new JLabel("");
 		lblUserImg.setBounds(20, 84, 289, 223);
 		frmPerchsec.getContentPane().add(lblUserImg);
 		
@@ -109,7 +116,7 @@ public class MainApp implements ActionListener,QRListener {
 		btnCheckUser.addActionListener(this);
 		frmPerchsec.getContentPane().add(btnCheckUser);
 		
-		JButton btnTest = new JButton("Test");
+		JButton btnTest = new JButton("QR");
 		btnTest.setBounds(102, 356, 89, 23);
 		btnTest.setActionCommand(TEST);
 		btnTest.addActionListener(this);
@@ -161,32 +168,47 @@ public class MainApp implements ActionListener,QRListener {
 		
 		if(e.getActionCommand()== CHECK)
 		{
-			System.out.println("asda333333333");
+			System.out.println("check");
+			
+			
 			qrChecker  = new QRChecker();
-			qrChecker.setQRListener(this);
-			System.out.println("asda");
+			qrChecker.setQRListener(this);			
 			qrChecker.show();
-			//mundo.buscarUsuario(3);
-			//actualizarLabels();
+		
 		}else if(e.getActionCommand().equals(TEST)){
 			System.out.println("test");
-			BufferedImage bf=QRgenerator.generate("3");
+			 String test1= JOptionPane.showInputDialog(": ");
+			 Usuario usu=buscarUsuario(test1.trim());
+			 if (usu==null) return;
+			 BufferedImage bf=QRgenerator.generate(test1.trim());
 			 ImageIcon icon = new ImageIcon(bf);	 
 			 lblUserImg.setIcon(icon);
 		}
 		
 	}
-	@Override
-	//Es llamado cuando se lee un QR
-	public void notice(String info) {
-		System.out.println("QR userid:"+info);
-		try {
-			
-			if(mundo.buscarUsuario(Integer.parseInt(info))!=null){
-				actualizarLabels();
-			}else{
-				//No se encontro
-			}
+	
+	private BufferedImage resize(BufferedImage otherImage,int x1,int x2)
+	{
+		BufferedImage newImage = new BufferedImage(x1, x2, BufferedImage.TYPE_INT_RGB);
+
+		Graphics g = newImage.createGraphics();
+		g.drawImage(otherImage, 0, 0, x1, x2, null);
+		g.dispose();
+		return newImage;
+	}
+	
+	
+	private Usuario buscarUsuario(String i){
+try {
+	Usuario usu=mundo.buscarUsuario(Integer.parseInt(i));
+	if(usu!=null){
+		actualizarLabels();
+		return usu;
+		
+	}else{
+		//No se encontro
+		JOptionPane.showMessageDialog(null, "No se encontro un usuario de ID="+i);
+	}	
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -194,6 +216,13 @@ public class MainApp implements ActionListener,QRListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
+		return null;
+	}
+	@Override
+	//Es llamado cuando se lee un QR
+	public void notice(String info) {
+		System.out.println("QR userid:"+info);
+		buscarUsuario(info);
 		
 	}
 
@@ -201,11 +230,13 @@ public class MainApp implements ActionListener,QRListener {
 		
 	 Usuario usr = mundo.getUsuario();
 	 txtrUserId.setText(""+usr.getId());
+	 txtrUserDoc.setText(""+usr.getCedula());
 	 txtrUserName.setText(""+usr.getNombre());
 	 txtrCarId.setText(""+usr.getPlaca());
 	 txtrUserHouse.setText(""+usr.getApartamento());
 	 BufferedImage bf=mundo.bytesToImage(usr.getFoto());
-	 ImageIcon icon = new ImageIcon(bf);	 
+	 BufferedImage bg2=resize(bf,95*2,164*2);
+	 ImageIcon icon = new ImageIcon(bg2);	 
 	 lblUserImg.setIcon(icon);
 	 
 		

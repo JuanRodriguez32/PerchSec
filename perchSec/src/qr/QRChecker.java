@@ -46,7 +46,7 @@ public class QRChecker extends JFrame implements Runnable, ThreadFactory {
 		
 		setLayout(new FlowLayout());
 		setTitle("Read QR / Bar Code With Webcam");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setDefaultCloseOperation(JFrame.);
 
 		Dimension size = WebcamResolution.QVGA.getSize();
 
